@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const client = (new MongoClient(process.env.MONGODB_URI)).connect().then(value =>
-    console.log('DB Connected!')
+    console.log(`DB Connected: ${value}`)
 );
 console.log(process.env.MONGODB_URI);
 
@@ -18,11 +18,11 @@ router.post('/register/', async (req, res) => {
     client.db(process.env.MONGODB_DBNAME).collection(process.env.MONGODB_USER_COLLECTION).insertOne(user.get()).then(
         result => {
             return res.status(201).json({
-                message: "User registered successfully"
+                message: `User registered successfully: ${result}`
                 // refresh_token: jwt.sign(user.get(), process.env.JWT_REFRESH_TOKEN_SECRET)
             });
         }, error => {
-            return res.status(500).json({error: "User registration failed"});
+            return res.status(500).json({error: `User registration failed: ${error}`});
         }
     );
 });
